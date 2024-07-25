@@ -1,7 +1,17 @@
+resource "aws_elastic_beanstalk_application" "app" {
+  name        = "app"
+  description = "Elastic Beanstalk Application"
+}
+
 resource "aws_elastic_beanstalk_environment" "app" {
   name                = "app-env"
   application         = aws_elastic_beanstalk_application.app.name
-  solution_stack_name = "64bit Amazon Linux 2 v3.1.0 running Docker"
+  solution_stack_name = "64bit Amazon Linux 2 v4.0.0 running Docker"
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "IamInstanceProfile"
+    value     = aws_iam_instance_profile.eb_instance_profile.name
+  }
 
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
@@ -32,9 +42,4 @@ resource "aws_elastic_beanstalk_environment" "app" {
     name      = "MaxSize"
     value     = "4"
   }
-}
-
-resource "aws_elastic_beanstalk_application" "app" {
-  name        = "app"
-  description = "Elastic Beanstalk Application"
 }

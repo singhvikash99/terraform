@@ -16,7 +16,8 @@ module "load_balancer" {
   source = "./load_balancer"
   vpc_id            = module.networking.vpc_id
   subnet_ids         = module.networking.public_subnet_ids
-  security_group_ids = module.security_groups.elb_sg_id
+  security_group_ids = [module.security_groups.elb_sg_id]
+
 }
 
 module "elastic_beanstalk" {
@@ -29,17 +30,13 @@ module "database" {
   subnet_ids = module.networking.private_subnet_ids
 }
 
-module "redis" {
-  source             = "./redis"
-  private_subnet_ids = module.networking.private_subnet_ids
-  vpc_id             = module.networking.vpc_id
+module "celery_redis" {
+  source = "./celery_redis"
+
+  vpc_id            = module.networking.vpc_id
+  public_subnet_ids  = module.networking.public_subnet_ids
 }
 
-module "celery" {
-  source = "./celery"
-  vpc_id = module.networking.vpc_id
-  subnet_ids = module.networking.private_subnet_ids
-}
 
 module "monitoring" {
   source = "./monitoring"
