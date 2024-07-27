@@ -1,3 +1,13 @@
+terraform {
+  backend "s3" {
+    bucket         = "ij-tfstate"
+    key            = "app.tfstate"
+    region         = "ap-south-1"
+    encrypt        = true
+    dynamodb_table = "ij-tfstate-lock"
+  }
+}
+
 provider "aws" {
   region = var.region
 }
