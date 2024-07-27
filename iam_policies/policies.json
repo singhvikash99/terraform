@@ -1,0 +1,30 @@
+{
+  "eb_instance_role_assume_policy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "ec2.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
+      }
+    ]
+  },
+  "eb_s3_access_policy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "s3:GetObject",
+          "s3:ListBucket"
+        ],
+        "Resource": [
+          "arn:aws:s3:::existing-bucket-name",
+          "arn:aws:s3:::existing-bucket-name/deployment/*"
+        ]
+      }
+    ]
+  }
+}
